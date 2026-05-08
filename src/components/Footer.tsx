@@ -1,99 +1,67 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import bxLogo from "@/assets/bx-logo-new.png";
 
 const Footer = () => {
-  const footerRef = useRef<HTMLElement>(null);
+  const footerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: footerRef,
     offset: ["start end", "end end"],
   });
 
-  const wordmarkScale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
-  const wordmarkOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 1]);
+  // Smooth parallax effect adjusted for the shorter footer height
+  const y = useTransform(scrollYProgress, [0, 1], [30, 0]);
+  const scale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
 
-  const links = [
+  const navLinks = [
     { label: "About", href: "/about" },
-    { label: "Services", href: "/services" },
-    { label: "Projects", href: "/projects" },
     { label: "Contact", href: "/contact" },
+    { label: "Terms and Conditions", href: "/terms" },
+    { label: "Privacy Policy", href: "/privacy-policy" },
   ];
 
   return (
-    <footer ref={footerRef} className="bg-foreground border-t border-background/10">
-      {/* Massive wordmark */}
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-20 lg:pt-28 overflow-hidden">
-        <motion.h2
-          style={{ scale: wordmarkScale, opacity: wordmarkOpacity }}
-          className="text-[18vw] md:text-[14vw] lg:text-[12vw] font-bold text-background/[0.04] leading-none tracking-tighter uppercase select-none will-change-transform"
-        >
-          BodhiX
-        </motion.h2>
-      </div>
-
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pb-10">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <img src={bxLogo} alt="BodhiX" className="h-10 w-auto brightness-0 invert mb-4" />
-            <p className="text-sm text-background/40 max-w-sm mb-6 leading-relaxed">
-              Custom software built around your business. Simple solutions for complex problems.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 text-sm text-background/60 hover:text-primary transition-colors group"
-            >
-              Get in touch
-              <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </Link>
-          </div>
-
-          {/* Navigation */}
-          <div>
-            <p className="text-[10px] font-mono tracking-[0.3em] uppercase text-background/25 mb-5">
-              Navigation
-            </p>
-            <ul className="space-y-3">
-              {links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-sm text-background/60 hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <p className="text-[10px] font-mono tracking-[0.3em] uppercase text-background/25 mb-5">
-              Contact
-            </p>
-            <ul className="space-y-3 text-sm text-background/40">
-              <li>hello@bodhix.com</li>
-              <li>+1 (555) 123-4567</li>
-            </ul>
+    <footer 
+      ref={footerRef} 
+      // Removed the fixed height so it snaps tightly to the content
+      className="relative w-full overflow-hidden text-white flex flex-col justify-between"
+      style={{
+        background: "linear-gradient(110deg, #000000 0%, #0000a0 25%, #3d0066 50%, #ff8000 80%, #e6e6e6 100%)"
+      }}
+    >
+      <div className="relative z-10 w-full max-w-[1800px] mx-auto px-8 lg:px-16 pt-12 pb-6 flex flex-col">
+        
+        {/* Top Minimal Navigation */}
+        {/* Changed mb-32/flex-1 spacing to mb-8 for that "one enter key" look */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
+          <nav className="flex flex-wrap gap-x-12 gap-y-4 font-mono text-[10px] tracking-[0.2em] uppercase">
+            {navLinks.map((link) => (
+              <Link 
+                key={link.label} 
+                to={link.href} 
+                className="hover:text-orange-400 transition-colors flex items-center group"
+              >
+                <span className="mr-2 opacity-0 group-hover:opacity-100 transition-all transform -translate-x-2 group-hover:translate-x-0">→</span> 
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+          
+          <div className="font-mono text-[10px] tracking-widest opacity-60 uppercase">
+            © 2026 BODHIX TECHNOLOGIES / ALL RIGHTS RESERVED
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-6 border-t border-background/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-background/25">
-            © {new Date().getFullYear()} BodhiX. All rights reserved.
-          </p>
-          <div className="flex items-center space-x-6">
-            <a href="#" className="text-xs text-background/25 hover:text-primary transition-colors">
-              Privacy
-            </a>
-            <a href="#" className="text-xs text-background/25 hover:text-primary transition-colors">
-              Terms
-            </a>
-          </div>
+        {/* The Hero Wordmark - Left Aligned */}
+        <div className="flex justify-start items-center">
+          <motion.div style={{ y, scale }}>
+            <h1 className="text-[16vw] lg:text-[18vw] font-black tracking-tighter leading-none uppercase select-none 
+                           text-transparent bg-clip-text bg-white opacity-95
+                           drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]
+                           ml-[-1vw]">
+              BODHIX
+            </h1>
+          </motion.div>
         </div>
       </div>
     </footer>

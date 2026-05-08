@@ -1,13 +1,11 @@
 import { motion } from "framer-motion";
 
 const NotificationBar = () => {
-  const messages = [
-    "✦ Crafting Digital Excellence",
-    "✦ Simplicity Meets Innovation",
-    "✦ Transform Your Vision Into Reality",
-    "✦ Building Tomorrow's Solutions Today",
-    "✦ Where Code Meets Creativity",
-  ];
+  const messages: string[] = [];
+
+  if (messages.length === 0) {
+    return null;
+  }
 
   const duplicatedMessages = [...messages, ...messages, ...messages];
 

@@ -6,72 +6,75 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+// Custom easing for buttery-smooth, premium transitions
+const smoothEase = [0.22, 1, 0.36, 1];
+
 const faqs = [
   {
-    category: "Getting Started",
+    category: "Initiation",
     questions: [
       {
-        q: "How do we begin a project with BodhiX?",
-        a: "It starts with a conversation. We schedule a discovery call to understand your business, challenges, and goals. From there, we provide a clear proposal with timeline and investment."
+        q: "How is a new project initiated?",
+        a: "We begin with a strategic discovery session to evaluate your operational challenges and technical requirements. This informs a comprehensive proposal detailing system architecture, timelines, and resource allocation."
       },
       {
-        q: "What information do you need from us?",
-        a: "We'll need to understand your business goals, target audience, existing systems, and key pain points. The more context you share, the better we can tailor our solution."
+        q: "What prerequisites are required from our team?",
+        a: "We require clear business objectives, a mapping of existing legacy systems, and identified operational friction points. Comprehensive context enables precise architectural planning."
       },
       {
-        q: "How long does a typical project take?",
-        a: "A simple web application might take 4-6 weeks. A comprehensive platform could be 3-6 months. We always provide realistic timelines upfront."
+        q: "What are typical delivery timeframes?",
+        a: "Timelines scale strictly with architectural complexity. Focused system integrations deploy in 4-6 weeks, while enterprise-grade platforms require 3-6 months of engineering."
       }
     ]
   },
   {
-    category: "Process",
+    category: "Methodology",
     questions: [
       {
-        q: "What makes BodhiX different?",
-        a: "We focus on simplicity and results. No bloated solutions, no unnecessary features. We build exactly what you need—nothing more, nothing less."
+        q: "What defines the BodhiX engineering approach?",
+        a: "Rigorous elimination of the unnecessary. We engineer systems focused entirely on core functionality, prioritizing stability, security, and measurable operational outcomes over superficial features."
       },
       {
-        q: "Do you work with startups?",
-        a: "Both startups and enterprises. We've helped startups launch MVPs and helped enterprises modernize legacy systems."
+        q: "Do you service early-stage ventures?",
+        a: "We partner with both emerging ventures building foundational architecture and established enterprises executing complex system modernizations."
       },
       {
-        q: "Direct communication with developers?",
-        a: "Absolutely. No layers of project managers between you and the people building your product."
+        q: "How is communication structured?",
+        a: "Direct, unmediated access to the engineering team. We eliminate intermediary management layers to maintain technical fidelity and operational speed."
       }
     ]
   },
   {
-    category: "Technical",
+    category: "Infrastructure",
     questions: [
       {
-        q: "What technologies do you use?",
-        a: "We're technology-agnostic. We often work with React, Node.js, Python, and modern cloud infrastructure. We prioritize proven, maintainable technologies."
+        q: "Which technology stacks do you deploy?",
+        a: "We utilize proven, resilient technologies tailored to specific system requirements—typically leveraging React, Node.js, Python, and scalable cloud infrastructure to ensure long-term maintainability."
       },
       {
-        q: "Ongoing support after launch?",
-        a: "Yes. We offer maintenance packages for updates, security patches, and feature enhancements."
+        q: "Is post-deployment infrastructure maintained?",
+        a: "Yes. We provide structured maintenance protocols covering security patching, performance optimizations, and iterative architectural scaling."
       },
       {
-        q: "Can you integrate with existing systems?",
-        a: "Most likely, yes. We have experience with a wide range of APIs, databases, and third-party services."
+        q: "Do you integrate with existing legacy environments?",
+        a: "Yes. A core competency is engineering secure middleware and robust API integrations to unify disparate operational workflows and data silos."
       }
     ]
   },
   {
-    category: "Investment",
+    category: "Engagements",
     questions: [
       {
-        q: "How do you price projects?",
-        a: "Fixed-price when scope is clear. Time-and-materials for evolving requirements. Either way, you'll know what to expect."
+        q: "How are engagements structured financially?",
+        a: "We utilize fixed-price models for strictly defined scopes, and time-and-materials frameworks for dynamic engineering environments requiring agile, ongoing adaptation."
       },
       {
-        q: "Payment structure?",
-        a: "Milestone-based payments—a deposit to begin, then payments tied to deliverables."
+        q: "What is the standard payment protocol?",
+        a: "Capital allocation is tied strictly to developmental milestones, ensuring investment aligns directly with tangible technical deliverables."
       },
       {
-        q: "What if requirements change?",
-        a: "We handle it transparently. If new requirements affect timeline or budget, we'll discuss it openly."
+        q: "How are structural scope variations managed?",
+        a: "With absolute transparency. Modifications to system requirements are evaluated openly against resource and timeline impacts prior to implementation."
       }
     ]
   }
@@ -79,85 +82,166 @@ const faqs = [
 
 const FAQ = () => {
   return (
-    <section className="bg-background relative">
-      {/* Compact Hero */}
-      <div className="py-16 lg:py-20 px-6">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-2xl"
-          >
-            <h1 className="text-3xl md:text-4xl font-light text-foreground mb-4">
-              FAQ
-            </h1>
-            <p className="text-muted-foreground leading-relaxed">
-              Everything you need to know about working with us.
-            </p>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* FAQ Grid - 2 columns */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 pb-16 lg:pb-20">
-        <div className="grid md:grid-cols-2 gap-6">
-          {faqs.map((category, categoryIndex) => (
-            <motion.div
-              key={category.category}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: categoryIndex * 0.05 }}
-              className="border border-border rounded-lg p-6"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-primary/40 text-xs font-medium">
-                  0{categoryIndex + 1}
-                </span>
-                <h2 className="text-lg font-light text-foreground">
-                  {category.category}
-                </h2>
-              </div>
-
-              <Accordion type="single" collapsible className="space-y-2">
-                {category.questions.map((item, index) => (
-                  <AccordionItem
-                    key={index}
-                    value={`${categoryIndex}-${index}`}
-                    className="border-0 border-b border-border last:border-0"
-                  >
-                    <AccordionTrigger className="text-left text-sm text-foreground hover:no-underline py-3">
-                      <span className="pr-4">{item.q}</span>
-                    </AccordionTrigger>
-                    <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-3">
-                      {item.a}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* CTA */}
+    <section id="faq" className="bg-background min-h-screen py-32 px-6 font-sans">
+      <div className="max-w-7xl mx-auto flex flex-col gap-24">
+        
+        {/* Seamless Hero Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mt-8 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: smoothEase }}
+          className="max-w-4xl"
         >
-          <p className="text-muted-foreground text-sm mb-4">
-            Still have questions?
+          <div className="flex items-center gap-4 mb-10">
+            <div className="h-[1px] w-12 bg-foreground/10"></div>
+            <h1 className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-foreground/40 font-medium">
+              Operational Inquiries
+            </h1>
+          </div>
+          
+          {/* Scaled down heading */}
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-foreground leading-[1.1] tracking-tight mb-6">
+            Clarity on execution.
+          </h2>
+          
+          {/* Scaled down paragraph */}
+          <p className="text-lg text-muted-foreground leading-relaxed font-light max-w-2xl">
+            Detailed parameters regarding our engineering methodology, technical infrastructure capabilities, and engagement frameworks.
           </p>
-          <a
-            href="/contact"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors text-sm"
-          >
-            Get in touch
-          </a>
         </motion.div>
+
+        {/* Borderless Open Grid Layout */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1.2, ease: smoothEase, delay: 0.1 }}
+          className="w-full overflow-x-auto"
+        >
+          <table className="w-full min-w-[1000px] border-collapse text-left bg-transparent">
+            <tbody>
+              {/* Row 1 */}
+              <tr>
+                <td className="border-b border-r border-border/20 p-12 lg:p-16 w-1/2 align-top hover:bg-foreground/[0.015] transition-colors duration-700 ease-out group">
+                  <div className="flex justify-between items-start mb-10">
+                    <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium group-hover:text-foreground/60 transition-colors duration-500">
+                      {faqs[0].category}
+                    </p>
+                    <span className="text-2xl font-light text-foreground/10">01</span>
+                  </div>
+                  <Accordion type="single" collapsible className="w-full">
+                    {faqs[0].questions.map((item, index) => (
+                      <AccordionItem key={index} value={`req-0-${index}`} className="border-border/20">
+                        {/* Scaled down trigger text to text-base */}
+                        <AccordionTrigger className="text-foreground font-light text-base text-left hover:no-underline py-4 group/trigger">
+                          <span className="group-hover/trigger:translate-x-1 transition-transform duration-500 ease-out">
+                            {item.q}
+                          </span>
+                        </AccordionTrigger>
+                        {/* Scaled down content text to text-sm */}
+                        <AccordionContent className="text-muted-foreground font-light leading-relaxed pb-5 text-sm">
+                          {item.a}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </td>
+
+                <td className="border-b border-border/20 p-12 lg:p-16 w-1/2 align-top hover:bg-foreground/[0.015] transition-colors duration-700 ease-out group">
+                  <div className="flex justify-between items-start mb-10">
+                    <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium group-hover:text-foreground/60 transition-colors duration-500">
+                      {faqs[1].category}
+                    </p>
+                    <span className="text-2xl font-light text-foreground/10">02</span>
+                  </div>
+                  <Accordion type="single" collapsible className="w-full">
+                    {faqs[1].questions.map((item, index) => (
+                      <AccordionItem key={index} value={`req-1-${index}`} className="border-border/20">
+                        <AccordionTrigger className="text-foreground font-light text-base text-left hover:no-underline py-4 group/trigger">
+                          <span className="group-hover/trigger:translate-x-1 transition-transform duration-500 ease-out">
+                            {item.q}
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground font-light leading-relaxed pb-5 text-sm">
+                          {item.a}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </td>
+              </tr>
+
+              {/* Row 2 */}
+              <tr>
+                <td className="border-b border-r border-border/20 p-12 lg:p-16 w-1/2 align-top hover:bg-foreground/[0.015] transition-colors duration-700 ease-out group">
+                  <div className="flex justify-between items-start mb-10">
+                    <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium group-hover:text-foreground/60 transition-colors duration-500">
+                      {faqs[2].category}
+                    </p>
+                    <span className="text-2xl font-light text-foreground/10">03</span>
+                  </div>
+                  <Accordion type="single" collapsible className="w-full">
+                    {faqs[2].questions.map((item, index) => (
+                      <AccordionItem key={index} value={`req-2-${index}`} className="border-border/20">
+                        <AccordionTrigger className="text-foreground font-light text-base text-left hover:no-underline py-4 group/trigger">
+                          <span className="group-hover/trigger:translate-x-1 transition-transform duration-500 ease-out">
+                            {item.q}
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground font-light leading-relaxed pb-5 text-sm">
+                          {item.a}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </td>
+
+                <td className="border-b border-border/20 p-12 lg:p-16 w-1/2 align-top hover:bg-foreground/[0.015] transition-colors duration-700 ease-out group">
+                  <div className="flex justify-between items-start mb-10">
+                    <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-muted-foreground font-medium group-hover:text-foreground/60 transition-colors duration-500">
+                      {faqs[3].category}
+                    </p>
+                    <span className="text-2xl font-light text-foreground/10">04</span>
+                  </div>
+                  <Accordion type="single" collapsible className="w-full">
+                    {faqs[3].questions.map((item, index) => (
+                      <AccordionItem key={index} value={`req-3-${index}`} className="border-border/20">
+                        <AccordionTrigger className="text-foreground font-light text-base text-left hover:no-underline py-4 group/trigger">
+                          <span className="group-hover/trigger:translate-x-1 transition-transform duration-500 ease-out">
+                            {item.q}
+                          </span>
+                        </AccordionTrigger>
+                        <AccordionContent className="text-muted-foreground font-light leading-relaxed pb-5 text-sm">
+                          {item.a}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </td>
+              </tr>
+
+              {/* Row 3: Call to Action */}
+              <tr>
+                <td colSpan={2} className="p-12 lg:p-16 hover:bg-foreground/[0.015] transition-colors duration-700 ease-out">
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-8 w-full max-w-4xl mx-auto text-center md:text-left">
+                    <div>
+                      {/* Scaled down text elements here */}
+                      <h3 className="text-xl text-foreground font-light mb-2">Require further clarification?</h3>
+                      <p className="text-sm text-muted-foreground font-light">Initiate a direct dialogue with our engineering team.</p>
+                    </div>
+                    <a
+                      href="/contact"
+                      className="px-6 py-3 bg-transparent border border-foreground/20 text-foreground text-[10px] md:text-xs uppercase tracking-widest font-medium hover:bg-foreground hover:text-background transition-all duration-500 ease-out rounded-none"
+                    >
+                      Commence Dialogue
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </motion.div>
+        
       </div>
     </section>
   );

@@ -1,204 +1,169 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { motion } from "framer-motion";
+import { ArrowRight, Terminal } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
 
-const projects = [
-  { name: "FinTrack Pro", tags: ["SaaS", "Frontend", "Backend"], year: "2024" },
-  { name: "MediConnect", tags: ["UX/UI Design", "Mobile App"], year: "2024" },
-  { name: "RetailFlow", tags: ["E-Commerce", "API Integration"], year: "2023" },
-  { name: "CloudSync", tags: ["Cloud Platform", "DevOps"], year: "2023" },
-];
-
-// The same premium deceleration curve used in the hero
-const ease = [0.19, 1.0, 0.22, 1.0];
+// Premium, buttery ease-out curve
+const smoothEase = [0.22, 1, 0.36, 1];
 
 const textReveal = {
-  hidden: { y: "120%", opacity: 0, rotate: 1 },
-  visible: (i: number) => ({
+  hidden: { y: "100%", opacity: 0 },
+  visible: (i) => ({
     y: "0%",
     opacity: 1,
-    rotate: 0,
     transition: {
       duration: 1.2,
       delay: i * 0.15,
-      ease,
+      ease: smoothEase,
     },
   }),
 };
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({
+  visible: (i) => ({
     opacity: 1,
     y: 0,
     transition: {
       duration: 1,
-      delay: 0.4 + i * 0.12,
-      ease,
+      delay: 0.2 + i * 0.1,
+      ease: smoothEase,
     },
   }),
 };
 
 const HomeAboutSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  
-  // Keeping scroll progress for the parallax on the cards and descriptions
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const descY = useTransform(scrollYProgress, [0.1, 0.4], [60, 0]);
-  const cardsY = useTransform(scrollYProgress, [0.2, 0.6], [100, 0]);
-
   return (
-    <section 
-      ref={sectionRef} 
-      // Stark white background with high-contrast text
-      className="py-28 lg:py-40 bg-white text-zinc-950 relative overflow-hidden font-sans"
-    >
-      <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
+    // Note: Removed overflow-hidden from parent because it breaks CSS 'sticky' behavior
+    <section className="w-full bg-stone-50 text-stone-900 font-sans border-y-[1.17px] border-stone-900 flex flex-col lg:flex-row relative">
+      
+      {/* LEFT COLUMN: Sticky Header (50% width) */}
+      <div className="w-full lg:w-1/2 border-b-[1.17px] lg:border-b-0 lg:border-r-[1.17px] border-stone-900 p-8 md:p-12 lg:p-16 bg-stone-100">
         
-        <div className="mb-24 lg:mb-32">
-          {/* Premium Typography: 
-            font-normal, super tight leading (0.8), tight tracking (-0.04em) 
-          */}
+        {/* Sticky Container */}
+        <div className="lg:sticky lg:top-32 flex flex-col justify-center">
+          
+          <motion.div 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-2 mb-8 md:mb-12"
+          >
+            <Terminal size={16} className="text-orange-500" />
+            <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-stone-500">
+              Operational Standard
+            </span>
+          </motion.div>
+
+          {/* Brutalist Massive Typography */}
           <motion.h2 
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="font-normal leading-[0.8] tracking-[-0.04em] uppercase text-[11vw] md:text-[9vw] lg:text-[7.5vw] select-none flex flex-col gap-0 mb-12"
+            viewport={{ once: true, amount: 0.2 }}
+            className="font-medium uppercase tracking-tighter text-[11vw] lg:text-[6vw] leading-[0.95] flex flex-col text-transparent bg-clip-text"
+            style={{
+              backgroundImage: "radial-gradient(circle at 95% 45%, #fbf8f2 0%, #d7d5d0 25%, #9b9a98 55%, #5f6060 85%, #1a1a1a 100%)",
+            }}
           >
-            {/* LINE 1 */}
-            <div className="overflow-hidden py-1 lg:py-2">
-              <motion.span
-                custom={0}
-                variants={textReveal}
-                className="block origin-bottom-left will-change-transform"
-              >
-                ALL OUR PROJECTS
+            <div className="overflow-hidden py-1">
+              <motion.span custom={0} variants={textReveal} className="block">
+                UNCOMPROMISED
               </motion.span>
             </div>
-            
-            {/* LINE 2 */}
-            <div className="overflow-hidden py-1 lg:py-2">
-              <motion.span
-                custom={1}
-                variants={textReveal}
-                // Using a subtle grey for the middle line to add depth
-                className="block text-zinc-400 origin-bottom-left will-change-transform"
-              >
-                ARE DELIVERED WITH
+            <div className="overflow-hidden py-1">
+              <motion.span custom={1} variants={textReveal} className="block">
+                QUALITY &
               </motion.span>
             </div>
-
-            {/* LINE 3 */}
-            <div className="overflow-hidden py-1 lg:py-2 flex items-baseline">
-              <motion.span
-                custom={2}
-                variants={textReveal}
-                className="block origin-bottom-left will-change-transform"
-              >
-                QUALITY.
+            <div className="overflow-hidden py-1">
+              <motion.span custom={2} variants={textReveal} className="block">
+                PRECISION.
               </motion.span>
             </div>
           </motion.h2>
-
-          <motion.div
-            style={{ y: descY }}
-            className="grid md:grid-cols-2 gap-8 lg:gap-16 max-w-4xl will-change-transform"
-          >
-            <motion.p 
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={fadeUp}
-              custom={0}
-              className="text-base md:text-lg text-zinc-500 font-medium leading-relaxed tracking-wide"
-            >
-              "Bodhi" means awakening. We bring that clarity to every project — understanding your business first, then building exactly what you need.
-            </motion.p>
-            <div className="flex flex-col items-start gap-8">
-              <motion.p 
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                variants={fadeUp}
-                custom={1}
-                className="text-base md:text-lg text-zinc-500 font-medium leading-relaxed tracking-wide"
-              >
-                From startups to established businesses, we deliver software that works. On time. On budget. No unnecessary complexity, just results.
-              </motion.p>
-              
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={fadeUp}
-                custom={2}
-              >
-                <Link
-                  to="/about"
-                  className="inline-flex items-center gap-3 text-sm font-bold uppercase tracking-widest text-zinc-950 hover:text-zinc-500 transition-colors duration-300 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[2px] after:bg-zinc-950 hover:after:w-full after:transition-all after:duration-300 group"
-                >
-                  More about us
-                  <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform" />
-                </Link>
-              </motion.div>
-            </div>
-          </motion.div>
         </div>
-
-        {/* Project cards with scroll parallax */}
-        <motion.div style={{ y: cardsY }} className="will-change-transform">
-          <div className="flex items-center justify-between mb-8 border-b border-zinc-200 pb-4">
-            <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">
-              Recent Projects
-            </p>
-            <Link
-              to="/projects"
-              className="text-xs font-bold uppercase tracking-widest text-zinc-950 hover:text-zinc-500 transition-colors flex items-center gap-2 group"
-            >
-              View all <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.name}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: index * 0.1, ease }}
-                className="group cursor-pointer"
-              >
-                {/* Crisp, minimalist card image placeholder */}
-                <div className="h-64 bg-zinc-100 group-hover:bg-zinc-200 transition-colors duration-500 flex items-center justify-center relative overflow-hidden mb-5 rounded-sm">
-                  <span className="text-8xl font-normal text-zinc-950/[0.03] group-hover:text-zinc-950/[0.08] transition-colors duration-500 group-hover:scale-105 transform">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-lg font-bold text-zinc-950 tracking-tight">{project.name}</h3>
-                    <span className="text-xs text-zinc-400 font-medium">{project.year}</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 border border-zinc-200 px-3 py-1 rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
+
+      {/* RIGHT COLUMN: Scrolling Content (50% width) */}
+      <div className="w-full lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col gap-20 lg:gap-32 bg-white">
+        
+        {/* Block 01 */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-col gap-6"
+        >
+          <motion.div variants={fadeUp} custom={0} className="border-b-[1.17px] border-stone-900 pb-4">
+            <span className="text-sm font-mono font-bold text-orange-500 tracking-widest">01 // AWAKENING</span>
+          </motion.div>
+          
+          <motion.h3
+            variants={fadeUp}
+            custom={1}
+            className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight leading-snug text-transparent bg-clip-text"
+            style={{
+              backgroundImage: "radial-gradient(ellipse at 100% 40%, #ffffff 0%, #d1d1ce 20%, #8a8986 50%, #45413f 80%, #1c1917 100%)",
+            }}
+          >
+            Understanding your business deeply first, before we write a single line of code.
+          </motion.h3>
+          
+          <motion.p variants={fadeUp} custom={2} className="text-base md:text-lg text-stone-600 font-medium leading-relaxed">
+            "Bodhi" means awakening. We bring that absolute clarity to every project. We map your architecture, identify bottlenecks, and build exactly what you need to scale effortlessly.
+          </motion.p>
+        </motion.div>
+
+        {/* Block 02 */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-col gap-6"
+        >
+          <motion.div variants={fadeUp} custom={0} className="border-b-[1.17px] border-stone-900 pb-4">
+            <span className="text-sm font-mono font-bold text-stone-400 tracking-widest">02 // EXECUTION</span>
+          </motion.div>
+          
+          <motion.h3
+            variants={fadeUp}
+            custom={1}
+            className="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight leading-snug text-transparent bg-clip-text"
+            style={{
+              backgroundImage: "radial-gradient(ellipse at 100% 40%, #ffffff 0%, #d1d1ce 20%, #8a8986 50%, #45413f 80%, #1c1917 100%)",
+            }}
+          >
+            On time and on budget, with zero unnecessary complexity.
+          </motion.h3>
+          
+          <motion.p variants={fadeUp} custom={2} className="text-base md:text-lg text-stone-600 font-medium leading-relaxed">
+            From fast-moving startups to established enterprises, we deliver software that simply works. No bloated timelines. No over-engineered solutions. Just tangible, high-performance results.
+          </motion.p>
+        </motion.div>
+
+        {/* Action Link */}
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={fadeUp} 
+          custom={0}
+          className="pt-8"
+        >
+          <Link
+            to="/about"
+            className="group inline-flex items-center gap-6 text-sm md:text-base font-bold uppercase tracking-[0.2em] text-stone-900 transition-colors hover:text-orange-500"
+          >
+            <span>Discover our approach</span>
+            
+            {/* Architectural Arrow Container */}
+            <div className="w-12 h-12 border-[0.36px] border-[#0e264d] flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white transition-all duration-300">
+              <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </div>
+          </Link>
+        </motion.div>
+
+      </div>
+
     </section>
   );
 };
