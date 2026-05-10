@@ -32,8 +32,8 @@ const Footer = () => {
       <div className="relative z-10 w-full max-w-[1800px] mx-auto px-8 lg:px-16 pt-12 pb-6 flex flex-col">
         
         {/* Top Minimal Navigation */}
-        {/* Changed mb-32/flex-1 spacing to mb-8 for that "one enter key" look */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
+        {/* FIX 1: Added `relative z-20` to force links above the giant text box */}
+        <div className="relative z-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
           <nav className="flex flex-wrap gap-x-12 gap-y-4 font-mono text-[10px] tracking-[0.2em] uppercase">
             {navLinks.map((link) => (
               <Link 
@@ -53,9 +53,10 @@ const Footer = () => {
         </div>
 
         {/* The Hero Wordmark - Left Aligned */}
-        <div className="flex justify-start items-center">
+        {/* FIX 2: Added `pointer-events-none` so the massive text box ignores the mouse entirely */}
+        <div className="flex justify-start items-center pointer-events-none">
           <motion.div style={{ y, scale }}>
-            <h1 className="text-[16vw] lg:text-[18vw] font-black tracking-tighter leading-none uppercase select-none 
+            <h1 className="text-[16vw] lg:text-[18vw] font-black tracking-[-9.9px] leading-none uppercase select-none 
                            text-transparent bg-clip-text bg-white opacity-95
                            drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]
                            ml-[-1vw]">

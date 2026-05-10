@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Mail, Phone, Code2 } from "lucide-react";
-
+import { ArrowRight, Code2 } from "lucide-react";
 
 const CTASection = () => {
   return (
@@ -22,27 +21,23 @@ const CTASection = () => {
 
         {/* Clean, Massive Typography - Dark Silver with Radial Shine from Right */}
         <h2
-          className="relative z-10 font-black uppercase tracking-tighter text-[12vw] lg:text-[8.5vw] leading-[0.85] flex flex-col mt-6 md:mt-8 text-transparent bg-clip-text"
+          // Tightened line-height to 0.85 for a tighter stack
+          className="relative z-10 font-black uppercase tracking-tighter text-[9.5vw] sm:text-[8.5vw] md:text-[9vw] lg:text-[6.5vw] xl:text-[7.5vw] 2xl:text-[8.5vw] leading-[0.85] flex flex-col mt-6 md:mt-8 text-transparent bg-clip-text whitespace-nowrap"
           style={{
             // The Radial Shine Effect: Bright on the right edge, fading into dark silver/charcoal on the left
             backgroundImage: "radial-gradient(ellipse at 100% 50%, #ffffff 0%, #a8a29e 25%, #44403c 65%, #1c1917 100%)"
           }}
         >
-          <div className="overflow-hidden py-1">
-            <span className="block">
-             PURPOSE.
-            </span>
-          </div>
-          <div className="overflow-hidden py-1">
-            <span className="block">
-              BALANCE.
-            </span>
-          </div>
-          <div className="overflow-hidden py-1">
-            <span className="block">
-              PERFORMANCE.
-            </span>
-          </div>
+          {/* Removed the bottom padding (pb-1/pb-2) to bring the words flush together */}
+          <span className="block">
+            PURPOSE.
+          </span>
+          <span className="block">
+            BALANCE.
+          </span>
+          <span className="block">
+            PERFORMANCE.
+          </span>
         </h2>
       </div>
 

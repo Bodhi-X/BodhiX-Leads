@@ -13,9 +13,6 @@ import {
   Database, 
   Activity, 
   Shield, 
-  BarChart, 
-  LineChart, 
-  PieChart,
   Terminal, 
   Cpu, 
   Layers, 
@@ -31,24 +28,21 @@ import {
   SearchCode,
   BrainCircuit,
   Orbit,
-  Repeat
+  Repeat,
+  Store,
+  X,
+  UserCheck
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { useState, useEffect } from "react";
 
-// Smoother, premium easing curve
+// Premium easing curves
 const ease = [0.25, 1, 0.5, 1];
+const modalEase = [0.22, 1, 0.36, 1];
 
 const textReveal = {
   hidden: { y: "100%", opacity: 0 },
-  visible: (i: number) => ({
+  visible: (i) => ({
     y: "0%",
     opacity: 1,
     transition: {
@@ -61,7 +55,7 @@ const textReveal = {
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
-  visible: (i: number) => ({
+  visible: (i) => ({
     opacity: 1,
     y: 0,
     transition: {
@@ -72,26 +66,22 @@ const fadeUp = {
   }),
 };
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
-    }
-  }
-};
-
-const dialogItem = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease } }
-};
-
 const Services = () => {
-  const [selectedService, setSelectedService] = useState<number | null>(null);
+  const [selectedService, setSelectedService] = useState(null);
 
-  // Exactly 9 Services sorted alphabetically by title
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (selectedService !== null) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedService]);
+
+  // 9 Services sorted alphabetically by title
   const services = [
     {
       icon: Server,
@@ -107,7 +97,7 @@ const Services = () => {
     },
     {
       icon: BrainCircuit,
-      title: "Autonomous Decision Engines (RL Systems & Optimization)",
+      title: "Autonomous Decision Engines",
       description: "Advanced machine learning models that learn from trial and error to solve complex optimization problems.",
       features: [
         { icon: Repeat, label: "Self-Learning" },
@@ -130,28 +120,16 @@ const Services = () => {
       useCases: "Ideal for growing businesses that need reliable, fast, and secure online spaces for their websites, apps, or customer portals."
     },
     {
-      icon: LayoutDashboard,
-      title: "Custom Dashboards",
-      description: "Clear, real-time command centers that gather all your important business numbers into one easy view.",
-      features: [
-        { icon: BarChart, label: "Track Metrics" },
-        { icon: LineChart, label: "Spot Trends" },
-        { icon: PieChart, label: "Clear Views" }
-      ],
-      fullDescription: "We transform scattered, messy data into absolute clarity. We build custom screens that pull from your different tools, giving you an instant, easy-to-read snapshot of how your business is performing today.",
-      useCases: "Great for business owners, sales teams, and managers who need to track their daily progress at a quick glance."
-    },
-    {
       icon: Code2,
-      title: "Custom Software",
-      description: "Purpose-built applications tailored exactly to how your team works day-to-day.",
+      title: "Custom Software & Dashboards",
+      description: "Purpose-built applications and real-time command centers tailored exactly to your operational workflows.",
       features: [
         { icon: Terminal, label: "Clean Code" },
-        { icon: Cpu, label: "Smooth Usage" },
-        { icon: Layers, label: "Grows With You" }
+        { icon: LayoutDashboard, label: "Clear Views" },
+        { icon: Layers, label: "Scalable" }
       ],
-      fullDescription: "Instead of forcing your team to use clunky, generic tools, we build custom software designed specifically for your unique daily routine. It works exactly the way you want it to.",
-      useCases: "Perfect for businesses that are outgrowing their current tools, paying too much in monthly software fees, or wanting to launch their own digital product."
+      fullDescription: "Instead of forcing your team to use generic, clunky tools, we build custom software designed specifically for your unique daily routine. We pair this with interactive screens that pull from scattered data sources, transforming mess into absolute clarity so you can track performance at a glance.",
+      useCases: "Perfect for businesses outgrowing current tools, paying excessive software fees, or needing a unified, easy-to-read command center for their daily operations."
     },
     {
       icon: Binary,
@@ -179,7 +157,7 @@ const Services = () => {
     },
     {
       icon: Bot,
-      title: "Intelligent Autonomy",
+      title: "Intelligent Autonomy (AI Agents)",
       description: "Autonomous digital workers that handle complex tasks, customer support, and logic-based workflows 24/7.",
       features: [
         { icon: ChipIcon, label: "Smart Logic" },
@@ -200,13 +178,25 @@ const Services = () => {
       ],
       fullDescription: "We engineer specialized software libraries focused on encryption and authentication. Our code is designed to meet rigorous security standards like FIPS, ensuring your user data and access points remain impenetrable.",
       useCases: "Essential for healthcare apps, banking software, or government contractors who require high-level security compliance and robust authentication logic."
+    },
+    {
+      icon: Store,
+      title: "Shopify Design & Development",
+      description: "High-converting, visually striking e-commerce experiences engineered to maximize your online retail sales.",
+      features: [
+        { icon: LayoutDashboard, label: "Custom Themes" },
+        { icon: Zap, label: "Fast Checkout" },
+        { icon: Target, label: "Conversion" }
+      ],
+      fullDescription: "We design and develop premium Shopify storefronts that don't just look beautiful, but are strategically engineered to maximize conversions. From bespoke custom theme development to complex backend app integrations, we build highly scalable e-commerce machines.",
+      useCases: "Perfect for retail brands, direct-to-consumer (DTC) companies, and creators looking to scale their sales with a robust, custom-tailored online shopping experience."
     }
   ];
 
   return (
     <section
       id="services"
-      className="bg-white text-zinc-900 relative py-20 lg:py-24 font-sans overflow-hidden"
+      className="bg-white text-zinc-900 relative py-16 lg:py-20 font-sans overflow-hidden"
     >
       <style>{`
         @keyframes liquid-gradient {
@@ -221,15 +211,23 @@ const Services = () => {
           background-clip: text;
           animation: liquid-gradient 6s linear infinite;
         }
+        /* Custom scrollbar for modal */
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
       `}</style>
 
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-16 lg:mb-20">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-10">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-12 lg:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
           <motion.h2 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            className="font-medium uppercase leading-[1.05] tracking-tight text-5xl md:text-6xl lg:text-7xl xl:text-[5.5rem] flex flex-col gap-1 md:gap-2"
+            className="font-medium uppercase leading-[1.05] tracking-tight text-4xl md:text-5xl lg:text-6xl flex flex-col gap-1 md:gap-2"
           >
             <div className="overflow-hidden py-1">
               <motion.span 
@@ -244,7 +242,7 @@ const Services = () => {
               <motion.span 
                 custom={1} 
                 variants={textReveal} 
-                className="block will-change-transform bg-gradient-to-r from-black via-blue-900 to-orange-400 bg-clip-text text-transparent"
+                className="block will-change-transform bg-gradient-to-r from-black via-blue-900 to-orange-400 bg-clip-text text-transparent animate-live-gradient"
               >
                 SOLUTIONS.
               </motion.span>
@@ -257,10 +255,10 @@ const Services = () => {
             viewport={{ once: true, margin: "-50px" }}
             variants={fadeUp}
             custom={2}
-            className="max-w-sm pb-2 md:pb-4"
+            className="max-w-sm pb-1 md:pb-2"
           >
-            <p className="text-base md:text-lg text-zinc-500 font-light leading-relaxed">
-              Engineering high-performance digital solutions across nine specialized core disciplines.
+            <p className="text-sm md:text-base text-zinc-500 font-light leading-relaxed">
+              Engineering high-performance digital solutions across our specialized core disciplines.
             </p>
           </motion.div>
         </div>
@@ -268,117 +266,158 @@ const Services = () => {
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="border-t border-zinc-200">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: index * 0.05, ease }}
-              onClick={() => setSelectedService(index)}
-              className="group cursor-pointer border-b border-zinc-200 py-6 lg:py-10 flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-12 hover:bg-zinc-50 transition-all duration-500 relative px-4 -mx-4 rounded-xl overflow-hidden"
-            >
-              <div className="flex items-center gap-6 lg:w-1/4 shrink-0">
-                <span className="text-sm font-medium text-zinc-400 group-hover:text-zinc-900 transition-colors duration-500 w-6">
-                  {(index + 1).toString().padStart(2, '0')}
-                </span>
-                <div className="w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center group-hover:bg-zinc-200 group-hover:scale-110 transition-all duration-500">
-                  <service.icon className="w-5 h-5 text-zinc-900" strokeWidth={1.5} />
-                </div>
-              </div>
-
-              <div className="flex-1 grid md:grid-cols-2 gap-6 lg:gap-12 items-center">
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-medium tracking-tight text-zinc-900 mb-3 transition-colors duration-500 group-hover:text-zinc-600">
-                    {service.title}
-                  </h3>
-                  <p className="text-base text-zinc-500 font-light leading-relaxed">
-                    {service.description}
-                  </p>
-                </div>
-                
-                <div className="flex flex-row md:justify-end items-center gap-3 lg:pr-12">
-                  <div className="flex gap-3">
-                    {service.features.map((feature, i) => (
-                      <div key={i} className="relative group/tooltip flex justify-center">
-                        <div className="w-10 h-10 rounded-full border border-zinc-100 flex items-center justify-center text-zinc-400 group-hover:text-zinc-900 group-hover:border-zinc-300 group-hover:bg-white group-hover:shadow-sm transition-all duration-500 cursor-help">
-                          <feature.icon size={16} strokeWidth={1.5} />
-                        </div>
-                        
-                        <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-zinc-900 text-white text-[10px] font-medium tracking-widest uppercase rounded flex items-center justify-center opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-all duration-300 whitespace-nowrap z-20 shadow-xl translate-y-1 group-hover/tooltip:translate-y-0">
-                          {feature.label}
-                          <div className="absolute top-full left-1/2 -translate-x-1/2 border-[5px] border-transparent border-t-zinc-900" />
-                        </div>
-                      </div>
-                    ))}
+          {services.map((service, index) => {
+            const isActive = selectedService === index;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: index * 0.05, ease }}
+                onClick={() => setSelectedService(index)}
+                className="group cursor-pointer border-b border-zinc-200 py-6 lg:py-8 flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-12 transition-all duration-500 relative px-4 -mx-4 rounded-xl overflow-hidden hover:bg-zinc-50/50"
+              >
+                <div className="flex items-center gap-6 lg:w-1/4 shrink-0">
+                  <span className="text-xs font-medium text-zinc-400 group-hover:text-zinc-900 transition-colors duration-500 w-6">
+                    {(index + 1).toString().padStart(2, '0')}
+                  </span>
+                  <div className="w-10 h-10 rounded-full bg-zinc-100 text-zinc-900 flex items-center justify-center transition-all duration-500 group-hover:bg-zinc-200 group-hover:scale-110">
+                    <service.icon className="w-4 h-4" strokeWidth={1.5} />
                   </div>
                 </div>
-              </div>
 
-              <div className="absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500 hidden lg:block">
-                <ArrowUpRight size={24} className="text-zinc-900" />
-              </div>
-            </motion.div>
-          ))}
+                <div className="flex-1 grid md:grid-cols-2 gap-4 lg:gap-10 items-center">
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-medium tracking-tight text-zinc-900 mb-2 transition-colors duration-500 group-hover:text-zinc-600">
+                      {service.title}
+                    </h3>
+                    <p className="text-sm text-zinc-500 font-light leading-relaxed">
+                      {service.description}
+                    </p>
+                  </div>
+                  
+                  <div className="flex flex-row md:justify-end items-center gap-3 lg:pr-12">
+                    <div className="flex gap-2">
+                      {service.features.map((feature, i) => (
+                        <div key={i} className="relative group/tooltip flex justify-center">
+                          <div className="w-8 h-8 rounded-full border border-zinc-100 text-zinc-400 flex items-center justify-center transition-all duration-500 cursor-help group-hover:text-zinc-900 group-hover:border-zinc-300 group-hover:bg-white group-hover:shadow-sm">
+                            <feature.icon size={14} strokeWidth={1.5} />
+                          </div>
+                          
+                          <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 px-2 py-1 bg-zinc-900 text-white text-[9px] font-medium tracking-widest uppercase rounded flex items-center justify-center opacity-0 pointer-events-none group-hover/tooltip:opacity-100 transition-all duration-300 whitespace-nowrap z-20 shadow-xl translate-y-1 group-hover/tooltip:translate-y-0">
+                            {feature.label}
+                            <div className="absolute top-full left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-zinc-900" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 opacity-0 -translate-x-4 transition-all duration-500 hidden lg:block group-hover:opacity-100 group-hover:translate-x-0">
+                  <ArrowUpRight className="text-zinc-900" size={20} />
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
-      <Dialog open={selectedService !== null} onOpenChange={(open) => !open && setSelectedService(null)}>
-        <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto bg-white border-zinc-200 rounded-2xl p-8 lg:p-10 shadow-2xl">
-          <AnimatePresence mode="wait">
-            {selectedService !== null && (
-              <motion.div
-                key={selectedService}
-                variants={staggerContainer}
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
+      {/* Sharp & Compact Popup Modal */}
+      <AnimatePresence>
+        {selectedService !== null && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            
+            {/* Backdrop Blur Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: modalEase }}
+              onClick={() => setSelectedService(null)}
+              className="absolute inset-0 bg-zinc-900/50 backdrop-blur-sm"
+            />
+            
+            {/* Modal Container - Downsized to max-w-lg and ZERO border radius */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 15 }}
+              transition={{ duration: 0.4, ease: modalEase }}
+              className="w-full max-w-lg bg-white rounded-none shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] relative z-10 overflow-hidden flex flex-col max-h-[85vh]"
+            >
+              {/* Close Button - Sharp edges */}
+              <button 
+                onClick={() => setSelectedService(null)}
+                className="absolute top-4 right-4 md:top-5 md:right-5 z-20 w-8 h-8 rounded-none bg-zinc-50 hover:bg-zinc-200 border border-zinc-200/50 flex items-center justify-center text-zinc-500 hover:text-zinc-900 transition-all duration-300"
               >
-                <DialogHeader className="mb-8">
-                  <motion.div variants={dialogItem} className="flex items-center gap-4 mb-5">
-                    <div className="w-14 h-14 rounded-full bg-zinc-100 flex items-center justify-center shadow-sm">
-                      {(() => {
-                        const Icon = services[selectedService].icon;
-                        return <Icon className="w-6 h-6 text-zinc-900" strokeWidth={1.5} />
-                      })()}
-                    </div>
-                    <DialogTitle className="text-3xl font-medium tracking-tight text-zinc-900">
-                      {services[selectedService].title}
-                    </DialogTitle>
-                  </motion.div>
-                  <motion.div variants={dialogItem}>
-                    <DialogDescription className="text-base font-light text-zinc-600 leading-relaxed">
-                      {services[selectedService].fullDescription}
-                    </DialogDescription>
-                  </motion.div>
-                </DialogHeader>
+                <X size={16} strokeWidth={2} />
+              </button>
 
-                <div className="space-y-8">
-                  <motion.div variants={dialogItem}>
-                    <h4 className="text-xs font-semibold uppercase tracking-widest text-zinc-900 mb-3">Who is this for?</h4>
-                    <p className="text-sm font-light text-zinc-600 leading-relaxed bg-zinc-50 rounded-lg p-5 border border-zinc-100">
-                      {services[selectedService].useCases}
-                    </p>
-                  </motion.div>
-
-                  <motion.div variants={dialogItem} className="border-t border-zinc-100 pt-8 pb-2">
-                    <Link 
-                      to="/contact" 
-                      onClick={() => setSelectedService(null)}
-                      className="inline-flex items-center justify-between w-full sm:w-auto gap-8 bg-zinc-900 text-white px-8 py-4 rounded-full text-sm font-medium uppercase tracking-wider hover:bg-zinc-800 active:scale-[0.98] transition-all duration-300 shadow-lg shadow-zinc-900/20 group"
-                    >
-                      LET'S TALK
-                      <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white transition-colors duration-300">
-                        <ArrowRight size={14} className="text-white group-hover:text-zinc-900 group-hover:translate-x-1 transition-all duration-300" />
-                      </div>
-                    </Link>
-                  </motion.div>
+              {/* Scrollable Modal Content - Reduced padding */}
+              <div className="overflow-y-auto hide-scrollbar p-6 md:p-8">
+                
+                {/* Compact Sharp Header Icon */}
+                <div className="relative inline-flex items-center justify-center mb-5">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-blue-200 to-orange-200 blur-lg opacity-60"></div>
+                  <div className="relative w-12 h-12 rounded-none bg-white border border-zinc-100 shadow-sm flex items-center justify-center z-10">
+                    {(() => {
+                      const Icon = services[selectedService].icon;
+                      return <Icon size={20} className="text-zinc-800" strokeWidth={1.5} />
+                    })()}
+                  </div>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </DialogContent>
-      </Dialog>
+                
+                {/* Titles & Desc - Smaller text sizes */}
+                <h3 className="text-xl md:text-2xl font-medium tracking-tight text-zinc-900 mb-3 leading-tight">
+                  {services[selectedService].title}
+                </h3>
+                
+                <p className="text-xs md:text-sm text-zinc-500 font-light leading-relaxed mb-5">
+                  {services[selectedService].fullDescription}
+                </p>
+
+                {/* Feature Badges - Sharp edges, smaller text */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {services[selectedService].features.map((feature, i) => (
+                    <div key={i} className="flex items-center gap-1.5 px-3 py-1.5 rounded-none bg-zinc-50 border border-zinc-100">
+                      <feature.icon size={12} className="text-zinc-400" strokeWidth={2} />
+                      <span className="text-[11px] uppercase tracking-wide font-medium text-zinc-600">{feature.label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Who is this for Section - Sharp edges, scaled down */}
+                <div className="mt-2 bg-zinc-50/80 border border-zinc-100 rounded-none p-4 relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-900 to-orange-400 opacity-80" />
+                  <h4 className="text-[10px] font-bold uppercase tracking-widest text-zinc-400 mb-2 flex items-center gap-1.5">
+                    <UserCheck size={12} /> Ideal Profile
+                  </h4>
+                  <p className="text-xs md:text-sm font-medium text-zinc-700 leading-relaxed">
+                    {services[selectedService].useCases}
+                  </p>
+                </div>
+
+                {/* Downsized CTA Button - Sharp edges */}
+                <div className="mt-8 flex items-center">
+                  <Link 
+                    to="/contact" 
+                    onClick={() => setSelectedService(null)}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 hover:bg-black text-white rounded-none transition-all duration-300 group shadow-sm shadow-zinc-900/10 hover:shadow-md hover:shadow-zinc-900/20"
+                  >
+                    <span className="text-[11px] font-semibold uppercase tracking-widest">
+                      Discuss Project
+                    </span>
+                    <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
+                  </Link>
+                </div>
+
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

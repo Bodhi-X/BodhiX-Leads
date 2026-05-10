@@ -13,15 +13,22 @@ const Navbar = () => {
   // Handle scroll detection for background and color changes
   useEffect(() => {
     const handleScroll = () => {
-      // Trigger the scrolled state after 50px of scrolling
       setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
-    // Initialize state on mount
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [isOpen]);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -32,21 +39,25 @@ const Navbar = () => {
   ];
 
   // If on home page and NOT scrolled, use light text for the dark hero background.
-  // Otherwise, use the standard dark text for the light theme.
-  const isDarkHeroContext = isHome && !isScrolled;
+  // CRITICAL FIX: If the mobile menu is open, we force it to false so the logo and X button turn black against the white overlay.
+  const isDarkHeroContext = isHome && !isScrolled && !isOpen;
 
   return (
     <nav 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
-        isScrolled 
-          ? 'bg-white/90 backdrop-blur-md py-3 shadow-sm border-b border-stone-200' 
+        isScrolled || isOpen
+          ? 'bg-white/90 backdrop-blur-md py-4 shadow-sm border-b border-stone-200' 
           : 'bg-transparent py-6 md:py-8'
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center relative z-50">
+          <Link 
+            to="/" 
+            className="flex items-center relative z-50"
+            onClick={() => setIsOpen(false)}
+          >
             <img 
               src={bxLogo} 
               alt="BodhiX" 
@@ -64,12 +75,17 @@ const Navbar = () => {
                 to={link.href}
                 className="group relative py-2 flex items-center"
               >
+                {/* Helvetica Plain, No Bold, -45 Tracking */}
                 <span 
-                  className={`text-[11px] uppercase tracking-[0.2em] font-bold transition-colors duration-300 ${
+                  className={`text-[15px] font-normal transition-colors duration-300 ${
                     isDarkHeroContext
-                      ? 'text-white/80 group-hover:text-white'
-                      : 'text-stone-500 group-hover:text-stone-900'
+                      ? 'text-white/90 group-hover:text-white'
+                      : 'text-stone-600 group-hover:text-stone-900'
                   }`}
+                  style={{
+                    fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                    letterSpacing: "-0.045em"
+                  }}
                 >
                   {link.name}
                 </span>
@@ -89,38 +105,78 @@ const Navbar = () => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className={`p-2 transition-colors duration-300 ${
-                isDarkHeroContext && !isOpen ? 'text-white' : 'text-stone-900'
+                isDarkHeroContext ? 'text-white' : 'text-stone-900'
               }`}
               aria-label="Toggle menu"
             >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
+              {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Navigation Dropdown */}
-      {/* Kept out of the normal document flow so it slides down gracefully */}
+      {/* Mobile Navigation Dropdown - Full Screen Overlay */}
       <div 
-        className={`absolute top-0 left-0 w-full bg-white border-b border-stone-200 shadow-xl transition-all duration-500 ease-in-out overflow-hidden ${
-          isOpen ? 'max-h-[400px] opacity-100 py-20' : 'max-h-0 opacity-0 py-0 pointer-events-none'
+        className={`fixed inset-0 bg-stone-50 z-40 transition-transform duration-700 ease-[0.22,1,0.36,1] md:hidden ${
+          isOpen ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        <div className="flex flex-col items-center gap-6 px-6">
-          {navLinks.map((link) => (
+        {/* Right-aligned layout container */}
+        <div className="flex flex-col items-end justify-center h-[100dvh] px-8 pb-20 gap-6">
+          {navLinks.map((link, i) => (
             <Link
               key={link.name}
               to={link.href}
               onClick={() => setIsOpen(false)}
-              className="group relative overflow-hidden"
+              className="group relative overflow-hidden text-right"
+              style={{
+                transitionDelay: isOpen ? `${i * 50}ms` : '0ms',
+                opacity: isOpen ? 1 : 0,
+                transform: isOpen ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'all 0.5s cubic-bezier(0.22, 1, 0.36, 1)'
+              }}
             >
-              <span className="text-[12px] uppercase tracking-[0.2em] font-bold text-stone-600 transition-colors duration-300 group-hover:text-stone-900 block py-1">
+              {/* Massive, plain typography for mobile with -45 tracking */}
+              <span 
+                className="text-5xl sm:text-6xl font-normal text-stone-900 transition-colors duration-300 hover:text-orange-500 block py-1"
+                style={{
+                  fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                  letterSpacing: "-0.045em"
+                }}
+              >
                 {link.name}
               </span>
-              {/* Mobile Animated Live Underline */}
-              <span className="absolute left-0 bottom-0 w-full h-[1.5px] bg-orange-500 transform origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              
+              {/* Mobile Animated Live Underline (Right-to-Left scale) */}
+              <span className="absolute right-0 bottom-0 w-full h-[2px] bg-orange-500 transform origin-right scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </Link>
           ))}
+          
+          {/* Optional: Small mobile footer / contact info right-aligned */}
+          <div 
+            className="mt-12 flex flex-col items-end gap-2 text-right opacity-0 transition-opacity duration-700 delay-500"
+            style={{ opacity: isOpen ? 1 : 0 }}
+          >
+            <span 
+              className="text-xs font-normal text-stone-400"
+              style={{
+                fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                letterSpacing: "-0.02em"
+              }}
+            >
+              Operational Standard
+            </span>
+            <a 
+              href="mailto:hello@bodhix.com" 
+              className="text-sm font-normal text-stone-600 hover:text-orange-500"
+              style={{
+                fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif",
+                letterSpacing: "-0.045em"
+              }}
+            >
+              hello@bodhix.com
+            </a>
+          </div>
         </div>
       </div>
     </nav>

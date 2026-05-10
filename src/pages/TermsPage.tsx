@@ -28,11 +28,11 @@ const TermsPage = () => {
               </p>
             </div>
 
-            {/* Service-Specific Terms (NEW EXPANDED SECTION) */}
+            {/* UPDATED: Service-Specific Terms (Mapped to your 9 services) */}
             <div>
               <h2 className="text-xl font-medium text-stone-900 mb-6">1. Service-Specific Terms & Limitations</h2>
               <p className="mb-6">
-                BodhiX provides a diverse suite of technical and creative solutions. The following operational guidelines and liability limitations apply strictly based on the services you commission:
+                BodhiX provides a diverse suite of specialized technical solutions. The following operational guidelines and liability limitations apply strictly based on the specific services you commission:
               </p>
               <div className="overflow-x-auto border border-stone-200 rounded-sm bg-white">
                 <table className="w-full text-left border-collapse min-w-[800px]">
@@ -44,37 +44,67 @@ const TermsPage = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-stone-200 text-sm">
+                    
                     <tr className="hover:bg-stone-50/50 transition-colors">
-                      <td className="py-4 px-6 font-medium text-stone-800">API-as-a-Service & System Integration</td>
-                      <td className="py-4 px-6">Subject to strict rate limiting and fair-use policies. Clients are strictly responsible for securing their API keys.</td>
-                      <td className="py-4 px-6">BodhiX is not liable for data breaches resulting from exposed client keys or unauthorized downstream system access.</td>
+                      <td className="py-4 px-6 font-medium text-stone-800">API-as-a-Service</td>
+                      <td className="py-4 px-6">Subject to strict rate limiting and fair-use policies. Clients must actively secure their API keys and access tokens.</td>
+                      <td className="py-4 px-6">BodhiX is not liable for data breaches or excess usage fees resulting from exposed client keys or unauthorized downstream access.</td>
                     </tr>
+
                     <tr className="hover:bg-stone-50/50 transition-colors">
-                      <td className="py-4 px-6 font-medium text-stone-800">Cloud Infrastructure & Custom Software</td>
-                      <td className="py-4 px-6">Third-party server costs (e.g., AWS, GCP) are passed through to the client unless explicitly stated in the MSA.</td>
-                      <td className="py-4 px-6">We guarantee architecture integrity, but we are not liable for outages caused by underlying third-party cloud providers.</td>
+                      <td className="py-4 px-6 font-medium text-stone-800">Autonomous Decision Engines (RL)</td>
+                      <td className="py-4 px-6">Models learn dynamically based on historical and live data. Performance requires a continuous training lifecycle.</td>
+                      <td className="py-4 px-6">We do not guarantee specific business outcomes. BodhiX is not liable for unexpected model behaviors triggered by anomalous edge-case data.</td>
                     </tr>
+
                     <tr className="hover:bg-stone-50/50 transition-colors">
-                      <td className="py-4 px-6 font-medium text-stone-800">Web, Landing Pages & Dashboards</td>
-                      <td className="py-4 px-6">Delivered with standard cross-browser compatibility. Post-launch bug fixes are limited to the agreed-upon warranty period.</td>
-                      <td className="py-4 px-6">Client is responsible for all user-generated content hosted on their web applications.</td>
+                      <td className="py-4 px-6 font-medium text-stone-800">Cloud Infrastructure</td>
+                      <td className="py-4 px-6">Built on third-party providers (e.g., AWS, GCP). Usage costs are passed to the client unless otherwise contracted.</td>
+                      <td className="py-4 px-6">We guarantee architecture integrity but cannot be held liable for upstream outages, hardware failures, or data loss by cloud providers.</td>
                     </tr>
+
+                    <tr className="hover:bg-stone-50/50 transition-colors">
+                      <td className="py-4 px-6 font-medium text-stone-800">Custom Software & Dashboards</td>
+                      <td className="py-4 px-6">Delivered per SOW specifications. Real-time data streams rely on the availability of integrated third-party sources.</td>
+                      <td className="py-4 px-6">Post-launch bug fixes are limited to the agreed warranty period. We are not liable for data inaccuracies caused by external source APIs.</td>
+                    </tr>
+
+                    <tr className="hover:bg-stone-50/50 transition-colors">
+                      <td className="py-4 px-6 font-medium text-stone-800">DApps (Decentralized Apps)</td>
+                      <td className="py-4 px-6">Interacts with immutable blockchain networks. Clients must ensure thorough third-party auditing of smart contracts pre-launch.</td>
+                      <td className="py-4 px-6">BodhiX holds no liability for lost digital assets, gas fee fluctuations, end-user wallet mismanagement, or underlying protocol exploits.</td>
+                    </tr>
+
                     <tr className="hover:bg-stone-50/50 transition-colors">
                       <td className="py-4 px-6 font-medium text-stone-800">Digital Marketing</td>
-                      <td className="py-4 px-6">Clients must fund their own ad spend accounts directly. Campaigns are executed based on approved strategic frameworks.</td>
-                      <td className="py-4 px-6">While we optimize for performance, BodhiX legally cannot and does not guarantee specific ROI, conversion rates, or sales figures.</td>
+                      <td className="py-4 px-6">Clients must fund their ad spend directly to platforms. Campaigns are executed on approved, data-driven frameworks.</td>
+                      <td className="py-4 px-6">BodhiX legally cannot guarantee specific ROI, sales figures, or immunity from unpredictable platform algorithm changes/bans.</td>
                     </tr>
+
                     <tr className="hover:bg-stone-50/50 transition-colors">
-                      <td className="py-4 px-6 font-medium text-stone-800">Graphic & 3D Design</td>
-                      <td className="py-4 px-6">Revision cycles are strictly limited to the number outlined in the specific project Statement of Work (SOW).</td>
-                      <td className="py-4 px-6">Full IP rights transfer to the client <span className="font-semibold text-stone-900">only after</span> final invoice clearance.</td>
+                      <td className="py-4 px-6 font-medium text-stone-800">Intelligent Autonomy (AI Agents)</td>
+                      <td className="py-4 px-6">AI agents process natural language and execute workflows. Clients must implement human-in-the-loop safeguards for critical actions.</td>
+                      <td className="py-4 px-6">BodhiX is not liable for AI "hallucinations," inaccurate automated responses, or actions taken by agents without proper human oversight.</td>
                     </tr>
+
+                    <tr className="hover:bg-stone-50/50 transition-colors">
+                      <td className="py-4 px-6 font-medium text-stone-800">Security Libraries</td>
+                      <td className="py-4 px-6">FIPS-ready encryption and biometrics are provided as integration modules. Proper implementation is critical.</td>
+                      <td className="py-4 px-6">No system is entirely impenetrable. BodhiX is not liable for breaches resulting from improper integration or client-side vulnerabilities.</td>
+                    </tr>
+
+                    <tr className="hover:bg-stone-50/50 transition-colors">
+                      <td className="py-4 px-6 font-medium text-stone-800">Shopify Design & Dev</td>
+                      <td className="py-4 px-6">Built on the Shopify ecosystem. Functionality may rely on third-party apps and specific Shopify subscription tiers.</td>
+                      <td className="py-4 px-6">BodhiX is not responsible for Shopify platform downtime, third-party app conflicts, or gateway processing errors.</td>
+                    </tr>
+
                   </tbody>
                 </table>
               </div>
             </div>
 
-            {/* Commercial & Payment Terms (Table) */}
+            {/* Commercial & Payment Terms */}
             <div>
               <h2 className="text-xl font-medium text-stone-900 mb-6">2. Commercial & Payment Protocols</h2>
               <p className="mb-6">
@@ -106,7 +136,7 @@ const TermsPage = () => {
               </div>
             </div>
 
-            {/* Acceptable Use (Table) */}
+            {/* Acceptable Use */}
             <div>
               <h2 className="text-xl font-medium text-stone-900 mb-6">3. Platform Usage Guidelines</h2>
               <div className="overflow-x-auto border border-stone-200 rounded-sm bg-white">

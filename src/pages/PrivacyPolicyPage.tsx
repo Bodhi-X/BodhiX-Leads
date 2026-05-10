@@ -13,7 +13,6 @@ const PrivacyPolicyPage = () => {
           
           {/* Header Section */}
           <div className="mb-14 border-b border-stone-200 pb-8">
-            {/* Reduced heading size from 5xl to 4xl/3xl */}
             <h1 className="text-3xl md:text-4xl font-normal text-stone-900 tracking-tight">
               Privacy Policy
             </h1>
@@ -29,11 +28,11 @@ const PrivacyPolicyPage = () => {
               </p>
             </div>
 
-            {/* Service-Specific Data Handling (NEW EXPANDED SECTION) */}
+            {/* UPDATED: Service-Specific Data Handling (Mapped to your 9 services) */}
             <div>
               <h2 className="text-xl font-medium text-stone-900 mb-6">1. Service-Specific Data Handling</h2>
               <p className="mb-6">
-                Because we provide a wide array of technical and creative solutions, the data we process depends heavily on the services you utilize. Below is a detailed breakdown of how data is handled across our specific service divisions:
+                Because we provide a wide array of specialized technical solutions, the data we process depends heavily on the services you utilize. Below is a detailed breakdown of how data is handled across our service divisions:
               </p>
               <div className="overflow-x-auto border border-stone-200 rounded-sm bg-white">
                 <table className="w-full text-left border-collapse min-w-[800px]">
@@ -45,37 +44,67 @@ const PrivacyPolicyPage = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-stone-200 text-sm">
+                    
                     <tr className="hover:bg-stone-50/50 transition-colors">
-                      <td className="py-4 px-6 font-medium text-stone-800">API-as-a-Service & System Integration</td>
+                      <td className="py-4 px-6 font-medium text-stone-800">API-as-a-Service</td>
                       <td className="py-4 px-6">API keys, authentication tokens, payload telemetry, and rate-limit logs.</td>
-                      <td className="py-4 px-6">Processed solely for routing and uptime monitoring. Secured via end-to-end encryption and zero-trust verification.</td>
+                      <td className="py-4 px-6">Processed solely for routing, uptime monitoring, and billing. Secured via end-to-end encryption and zero-trust verification.</td>
                     </tr>
+
                     <tr className="hover:bg-stone-50/50 transition-colors">
-                      <td className="py-4 px-6 font-medium text-stone-800">Cloud Infrastructure & Custom Software</td>
+                      <td className="py-4 px-6 font-medium text-stone-800">Autonomous Decision Engines (RL)</td>
+                      <td className="py-4 px-6">Historical client datasets, live environment feedback loops, and reward-signal data.</td>
+                      <td className="py-4 px-6">Used exclusively to train and optimize client-specific models. Data is anonymized where possible and siloed strictly per client.</td>
+                    </tr>
+
+                    <tr className="hover:bg-stone-50/50 transition-colors">
+                      <td className="py-4 px-6 font-medium text-stone-800">Cloud Infrastructure</td>
                       <td className="py-4 px-6">Server logs, resource utilization metrics, database schemas, and deployment variables.</td>
-                      <td className="py-4 px-6">Used to maintain high-availability environments. Protected by strict role-based access control (RBAC).</td>
+                      <td className="py-4 px-6">Used to maintain high-availability environments and auto-scaling. Protected by strict role-based access control (RBAC).</td>
                     </tr>
+
                     <tr className="hover:bg-stone-50/50 transition-colors">
-                      <td className="py-4 px-6 font-medium text-stone-800">Web, Landing Pages & Dashboards</td>
-                      <td className="py-4 px-6">End-user interaction analytics, session states, and anonymized behavioral metrics.</td>
-                      <td className="py-4 px-6">Utilized to optimize UX/UI performance. Processed using cookie-less tracking where legally required.</td>
+                      <td className="py-4 px-6 font-medium text-stone-800">Custom Software & Dashboards</td>
+                      <td className="py-4 px-6">User session states, workflow inputs, and aggregated third-party data streams.</td>
+                      <td className="py-4 px-6">Processed to provide real-time operational clarity. User data is encrypted both at rest and in transit.</td>
                     </tr>
+
+                    <tr className="hover:bg-stone-50/50 transition-colors">
+                      <td className="py-4 px-6 font-medium text-stone-800">DApps (Decentralized Apps)</td>
+                      <td className="py-4 px-6">Public wallet addresses, transaction hashes, and smart contract interaction logs.</td>
+                      <td className="py-4 px-6">Necessary for blockchain interaction. BodhiX never stores, requests, or processes private keys or seed phrases on our servers.</td>
+                    </tr>
+
                     <tr className="hover:bg-stone-50/50 transition-colors">
                       <td className="py-4 px-6 font-medium text-stone-800">Digital Marketing</td>
                       <td className="py-4 px-6">Conversion pixels, campaign tracking parameters, and audience segmentation data.</td>
-                      <td className="py-4 px-6">Used strictly for calculating ROI and campaign efficacy. We never sell audience profiles.</td>
+                      <td className="py-4 px-6">Used strictly for calculating ROI and campaign efficacy. We never sell audience profiles or remarketing lists to third parties.</td>
                     </tr>
+
                     <tr className="hover:bg-stone-50/50 transition-colors">
-                      <td className="py-4 px-6 font-medium text-stone-800">Graphic & 3D Design</td>
-                      <td className="py-4 px-6">Proprietary brand assets, intellectual property, and unreleased media files.</td>
-                      <td className="py-4 px-6">Stored in secure, access-logged storage buckets to prevent unauthorized leaks before launch.</td>
+                      <td className="py-4 px-6 font-medium text-stone-800">Intelligent Autonomy (AI Agents)</td>
+                      <td className="py-4 px-6">Natural language prompts, conversational context, and automated workflow execution logs.</td>
+                      <td className="py-4 px-6">Used to execute logic and manage interactions. Personally Identifiable Information (PII) is masked before being processed by LLMs.</td>
                     </tr>
+
+                    <tr className="hover:bg-stone-50/50 transition-colors">
+                      <td className="py-4 px-6 font-medium text-stone-800">Security Libraries</td>
+                      <td className="py-4 px-6">Biometric hashes, cryptographic keys, and authentication access logs.</td>
+                      <td className="py-4 px-6">Handled client-side whenever possible to ensure FIPS compliance. Sensitive authentication data is never stored in plaintext.</td>
+                    </tr>
+
+                    <tr className="hover:bg-stone-50/50 transition-colors">
+                      <td className="py-4 px-6 font-medium text-stone-800">Shopify Design & Dev</td>
+                      <td className="py-4 px-6">E-commerce analytics, anonymized checkout flows, and customer journey maps.</td>
+                      <td className="py-4 px-6">Utilized to optimize UX and maximize storefront conversions. Handled securely within Shopify's compliant ecosystem guidelines.</td>
+                    </tr>
+
                   </tbody>
                 </table>
               </div>
             </div>
 
-            {/* General Information Collection (Table) */}
+            {/* General Information Collection */}
             <div>
               <h2 className="text-xl font-medium text-stone-900 mb-6">2. Standard Information We Collect</h2>
               <div className="overflow-x-auto border border-stone-200 rounded-sm bg-white">
@@ -111,7 +140,7 @@ const PrivacyPolicyPage = () => {
               </p>
             </div>
 
-            {/* Regional Rights (Table) */}
+            {/* Regional Rights */}
             <div>
               <h2 className="text-xl font-medium text-stone-900 mb-6">4. Global Privacy Rights</h2>
               <div className="overflow-x-auto border border-stone-200 rounded-sm bg-white">
@@ -149,7 +178,7 @@ const PrivacyPolicyPage = () => {
               <div>
                 <h2 className="text-lg font-medium text-stone-900 mb-3">5. Data Retention & Destruction</h2>
                 <p className="text-sm leading-relaxed text-stone-600">
-                  Client data, including source code, design assets, and marketing metrics, is retained only for the duration of the active contract plus a standard 90-day grace period to allow for smooth offboarding. Following this period, all operational data is subjected to cryptographic erasure unless legally required to be maintained for tax or compliance auditing.
+                  Client data, including source code, design assets, and analytics metrics, is retained only for the duration of the active contract plus a standard 90-day grace period to allow for smooth offboarding. Following this period, all operational data is subjected to cryptographic erasure unless legally required to be maintained for tax or compliance auditing.
                 </p>
               </div>
               <div>
