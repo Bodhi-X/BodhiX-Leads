@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Terminal } from "lucide-react";
 import { Link } from "react-router-dom";
-// Adjust the relative path to match your folder structure if your component isn't one level deep
 import grImage from "../assets/GR.png"; 
 
-// Premium, buttery ease-out curve
 const smoothEase = [0.22, 1, 0.36, 1];
 
 const fadeUp = {
@@ -22,20 +20,18 @@ const fadeUp = {
 
 const HomeAboutSection = () => {
   
-  // Extracting the header text into a reusable block so we can render it cleanly
-  // for both the mobile stack layout and the desktop scrolling overlay.
   const HeaderTextContent = (
     <>
       <div className="flex items-center gap-2 mb-6 md:mb-10">
-        <Terminal size={16} className="text-orange-500" />
+        <Terminal size={16} className="text-orange-500 shrink-0" />
         <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-stone-300">
           Operational Standard
         </span>
       </div>
 
-      {/* Brutalist Massive Typography */}
+      {/* FIXED: Reduced the minimum clamp size to 1.8rem to ensure "UNCOMPROMISED" fits on 320px wide screens */}
       <h2 
-        className="font-medium uppercase tracking-tighter text-4xl sm:text-6xl md:text-7xl lg:text-[2.5rem] xl:text-5xl 2xl:text-6xl leading-[0.95] md:leading-[0.9] flex flex-col text-transparent bg-clip-text whitespace-nowrap"
+        className="font-medium uppercase tracking-tighter text-[clamp(1.8rem,8.5vw,4rem)] md:text-7xl lg:text-[2.5rem] xl:text-5xl 2xl:text-6xl leading-[0.95] md:leading-[0.9] flex flex-col text-transparent bg-clip-text break-words w-full"
         style={{
           backgroundImage: "radial-gradient(circle at 95% 45%, #ffffff 0%, #e6e4df 25%, #a6a5a3 55%, #6d6e6e 85%, #333333 100%)",
         }}
@@ -50,34 +46,31 @@ const HomeAboutSection = () => {
   return (
     <section className="w-full bg-stone-50 text-stone-900 font-sans border-y-[1.17px] border-stone-900 flex flex-col lg:flex-row relative">
       
-      {/* LEFT COLUMN: Relative wrapper that matches the full height of the section */}
+      {/* LEFT COLUMN */}
       <div className="w-full lg:w-2/5 relative border-b-[1.17px] lg:border-b-0 lg:border-r-[1.17px] border-stone-900 bg-stone-950">
         
-        {/* IMAGE LAYER: Frozen/Sticky on Desktop, Static on Mobile */}
-        <div className="lg:sticky lg:top-0 w-full min-h-[50vh] lg:min-h-0 lg:h-screen flex flex-col justify-center relative z-0">
+        {/* Mobile Wrapper */}
+        <div className="lg:sticky lg:top-0 w-full min-h-[55dvh] lg:min-h-0 lg:h-[100dvh] flex flex-col justify-center relative z-0 overflow-hidden">
           
-          {/* Edge-to-Edge Background graphic - Changed to 'cover' to prevent squishing */}
           <div 
             className="absolute inset-0 z-0 pointer-events-none"
             style={{
               backgroundImage: `url(${grImage})`,
-              backgroundSize: "cover", // Forces the image to fill without compressing/distorting
+              backgroundSize: "cover", 
               backgroundPosition: "center",
               backgroundRepeat: "no-repeat",
-              opacity: 0.5, // Base image opacity
+              opacity: 0.5, 
             }}
           />
-          {/* Dark filter overlay for text contrast */}
           <div className="absolute inset-0 z-0 bg-black/60 pointer-events-none" />
 
-          {/* MOBILE TEXT: Renders directly inside so it flows naturally on small screens */}
-          <div className="relative z-10 w-full p-6 sm:p-8 md:p-12 lg:hidden">
+          {/* FIXED: Added pt-16 and pb-10 to give the text breathing room away from the top/bottom section borders */}
+          <div className="relative z-10 w-full p-6 pt-16 pb-10 sm:p-8 md:p-12 lg:hidden">
             {HeaderTextContent}
           </div>
         </div>
 
-        {/* DESKTOP TEXT SCROLL LAYER: Absolute container that allows the text to scroll 
-            down the entire height of the left column, sticking at top-32 as it goes. */}
+        {/* DESKTOP SCROLL LAYER */}
         <div className="absolute top-0 left-0 w-full h-full z-10 hidden lg:block pointer-events-none">
           <div className="sticky top-32 p-8 xl:p-12 pointer-events-auto">
             {HeaderTextContent}
@@ -86,10 +79,9 @@ const HomeAboutSection = () => {
 
       </div>
 
-      {/* RIGHT COLUMN: Scrolling Content */}
+      {/* RIGHT COLUMN */}
       <div className="w-full lg:w-3/5 p-8 md:p-12 lg:p-16 flex flex-col gap-20 lg:gap-32 bg-white relative z-10">
         
-        {/* Block 01 */}
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -103,7 +95,7 @@ const HomeAboutSection = () => {
           <motion.h3
             variants={fadeUp}
             custom={1}
-            className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight leading-snug text-transparent bg-clip-text"
+            className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight leading-snug text-transparent bg-clip-text break-words"
             style={{
               backgroundImage: "radial-gradient(ellipse at 100% 40%, #1a1a1a 0%, #4a4a4a 50%, #1c1917 100%)",
               WebkitBackgroundClip: "text",
@@ -119,7 +111,6 @@ const HomeAboutSection = () => {
           </motion.p>
         </motion.div>
 
-        {/* Block 02 */}
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -133,7 +124,7 @@ const HomeAboutSection = () => {
           <motion.h3
             variants={fadeUp}
             custom={1}
-            className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight leading-snug text-transparent bg-clip-text"
+            className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight leading-snug text-transparent bg-clip-text break-words"
             style={{
               backgroundImage: "radial-gradient(ellipse at 100% 40%, #1a1a1a 0%, #4a4a4a 50%, #1c1917 100%)",
               WebkitBackgroundClip: "text",
@@ -149,7 +140,6 @@ const HomeAboutSection = () => {
           </motion.p>
         </motion.div>
 
-        {/* Action Link */}
         <motion.div 
           initial="hidden"
           whileInView="visible"
@@ -163,8 +153,6 @@ const HomeAboutSection = () => {
             className="group inline-flex items-center gap-5 text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-stone-900 transition-colors hover:text-orange-500"
           >
             <span>Discover our approach</span>
-            
-            {/* Architectural Arrow Container */}
             <div className="w-10 h-10 border-[0.36px] border-[#0e264d] flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white transition-all duration-300">
               <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
             </div>
@@ -172,7 +160,6 @@ const HomeAboutSection = () => {
         </motion.div>
 
       </div>
-
     </section>
   );
 };
