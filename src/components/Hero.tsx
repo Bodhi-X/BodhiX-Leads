@@ -168,7 +168,8 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen flex flex-col justify-between bg-[#050505] relative overflow-hidden font-sans"
+      /* CHANGED: min-h-screen to min-h-[100dvh] to fix mobile browser UI cutoffs */
+      className="min-h-[100dvh] flex flex-col justify-between bg-[#050505] relative overflow-hidden font-sans"
     >
       {/* Background Aurora */}
       <BackgroundAurora />
@@ -230,7 +231,8 @@ const Hero = () => {
       {/* Bottom bar */}
       <motion.div
         style={{ opacity: bottomOpacity, y: bottomY }}
-        className="px-6 lg:px-12 pb-6 lg:pb-10 relative z-20 will-change-transform"
+        /* CHANGED: Increased bottom padding from pb-6 to pb-8 to give safe area spacing */
+        className="px-6 lg:px-12 pb-24 lg:pb-12 relative z-20 will-change-transform"
       >
         <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 lg:gap-20">
           
