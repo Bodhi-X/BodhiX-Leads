@@ -11,6 +11,9 @@ import {
   Infinity
 } from "lucide-react";
 
+// Import your image here
+import xpImage from "../assets/xp.png";
+
 // Smoother, premium easing curve
 const ease = [0.25, 1, 0.5, 1];
 
@@ -80,7 +83,6 @@ const About = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
-            // Reduced size: from 5xl/6xl/5rem down to 4xl/5xl/4rem
             className="font-medium uppercase leading-[1.05] tracking-tight text-4xl md:text-5xl lg:text-[4rem] flex flex-col gap-0.5"
           >
             <div className="overflow-hidden py-1">
@@ -187,7 +189,7 @@ const About = () => {
             {/* Cell 4: Framed Image */}
             <motion.div variants={itemVariants} className="bg-zinc-50 p-6 md:p-8 flex flex-col items-center justify-center min-h-[250px] md:min-h-[300px] overflow-hidden group">
               <img 
-                src="/src/assets/xp.png" 
+                src={xpImage} 
                 alt="BodhiX Environment"
                 className="max-w-[200px] md:max-w-[240px] w-full h-auto object-cover rounded-xl ring-1 ring-zinc-200 shadow-xl transition-all duration-700 group-hover:scale-105 group-hover:shadow-2xl"
               />
