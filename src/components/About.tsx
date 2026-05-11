@@ -187,7 +187,7 @@ const About = () => {
             {/* Cell 4: Framed Image */}
             <motion.div variants={itemVariants} className="bg-zinc-50 p-6 md:p-8 flex flex-col items-center justify-center min-h-[250px] md:min-h-[300px] overflow-hidden group">
               <img 
-                src="/src/assets/XP.jpeg" 
+                src="/src/assets/xp.png" 
                 alt="BodhiX Environment"
                 className="max-w-[200px] md:max-w-[240px] w-full h-auto object-cover rounded-xl ring-1 ring-zinc-200 shadow-xl transition-all duration-700 group-hover:scale-105 group-hover:shadow-2xl"
               />
