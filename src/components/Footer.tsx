@@ -1,19 +1,7 @@
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
 import bannerBg from "../assets/banner.jpg";
 
 const Footer = () => {
-  const footerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: footerRef,
-    offset: ["start end", "end end"],
-  });
-
-  // Smooth parallax effect adjusted for the shorter footer height
-  const y = useTransform(scrollYProgress, [0, 1], [30, 0]);
-  const scale = useTransform(scrollYProgress, [0, 1], [0.98, 1]);
-
   const navLinks = [
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
@@ -23,9 +11,9 @@ const Footer = () => {
 
   return (
     <footer 
-      ref={footerRef} 
-      // Removed the fixed height so it snaps tightly to the content
-      className="relative w-full overflow-hidden text-white flex flex-col justify-between"
+      // Added min-h-[400px] lg:min-h-[500px] to restore the old height 
+      // so the background image has plenty of space to be visible
+      className="relative w-full min-h-[400px] lg:min-h-[500px] overflow-hidden text-white flex flex-col justify-between"
       style={{
         backgroundImage: `url(${bannerBg})`,
         backgroundSize: "cover",
@@ -33,11 +21,10 @@ const Footer = () => {
         backgroundRepeat: "no-repeat"
       }}
     >
-      <div className="relative z-10 w-full max-w-[1800px] mx-auto px-8 lg:px-16 pt-12 pb-6 flex flex-col">
+      <div className="relative z-10 w-full h-full flex-1 max-w-[1800px] mx-auto px-8 lg:px-16 pt-12 pb-6 flex flex-col">
         
         {/* Top Minimal Navigation */}
-        {/* FIX 1: Added `relative z-20` to force links above the giant text box */}
-        <div className="relative z-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8">
+        <div className="relative z-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <nav className="flex flex-wrap gap-x-12 gap-y-4 font-mono text-[10px] tracking-[0.2em] uppercase">
             {navLinks.map((link) => (
               <Link 
@@ -55,6 +42,10 @@ const Footer = () => {
             © 2026 BODHIX TECHNOLOGIES / ALL RIGHTS RESERVED
           </div>
         </div>
+
+        {/* Empty space that pushes the height to ensure the background image shows properly */}
+        <div className="flex-1"></div>
+        
       </div>
     </footer>
   );
