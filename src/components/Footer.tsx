@@ -55,19 +55,6 @@ const Footer = () => {
             © 2026 BODHIX TECHNOLOGIES / ALL RIGHTS RESERVED
           </div>
         </div>
-
-        {/* The Hero Wordmark - Left Aligned */}
-        {/* FIX 2: Added `pointer-events-none` so the massive text box ignores the mouse entirely */}
-        <div className="flex justify-start items-center pointer-events-none">
-          <motion.div style={{ y, scale }}>
-            <h1 className="text-[16vw] lg:text-[18vw] font-black tracking-[-9.9px] leading-none uppercase select-none 
-                           text-transparent bg-clip-text bg-white opacity-95
-                           drop-shadow-[0_10px_30px_rgba(0,0,0,0.3)]
-                           ml-[-1vw]">
-              BODHIX
-            </h1>
-          </motion.div>
-        </div>
       </div>
     </footer>
   );
