@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import bannerBg from "../assets/banner.jpg";
 
 const Footer = () => {
   const footerRef = useRef(null);
@@ -26,7 +27,10 @@ const Footer = () => {
       // Removed the fixed height so it snaps tightly to the content
       className="relative w-full overflow-hidden text-white flex flex-col justify-between"
       style={{
-        background: "linear-gradient(110deg, #000000 0%, #0000a0 25%, #3d0066 50%, #ff8000 80%, #e6e6e6 100%)"
+        backgroundImage: `url(${bannerBg})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat"
       }}
     >
       <div className="relative z-10 w-full max-w-[1800px] mx-auto px-8 lg:px-16 pt-12 pb-6 flex flex-col">
