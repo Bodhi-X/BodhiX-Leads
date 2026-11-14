@@ -13,6 +13,9 @@ import ContactPage from "./pages/ContactPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 import TermsPage from "./pages/TermsPage";
 import NotFound from "./pages/NotFound";
+import Prototype from "./pages/Prototype";
+import { lazy, Suspense } from "react";
+const Prototype3D = lazy(() => import("./pages/Prototype3D"));
 
 const queryClient = new QueryClient();
 
@@ -25,6 +28,8 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
+            <Route path="/prototype-3d" element={<Suspense fallback={<div style={{background:'#050505',color:'#f4f0ea',minHeight:'100vh',display:'grid',placeItems:'center'}}>Loading the 3D study…</div>}><Prototype3D /></Suspense>} />
+            <Route path="/prototype" element={<Prototype />} />
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
