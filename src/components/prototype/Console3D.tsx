@@ -2,7 +2,7 @@ import { Component, useEffect, useMemo, useRef, type ReactNode, type Ref } from 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { RoundedBox } from "@react-three/drei/core/RoundedBox";
 import { Billboard } from "@react-three/drei/core/Billboard";
-import { CanvasTexture, SRGBColorSpace, type Group, type Mesh, type MeshBasicMaterial, type PerspectiveCamera } from "three";
+import { CanvasTexture, LinearFilter, LinearMipmapLinearFilter, SRGBColorSpace, type Group, type Mesh, type MeshBasicMaterial, type PerspectiveCamera } from "three";
 import { type MotionValue } from "framer-motion";
 
 type Props = { progress: MotionValue<number>; reduced: boolean; active?: number; quantity?: number; portrait?: boolean };
@@ -27,6 +27,8 @@ export function getWorkflowState(progress: number, quantity = 12) {
 function Label({ lines, width = 2.7, height = .76, color = "#f4f0ea", background = "", size = 64 }: {
   lines: string[]; width?: number; height?: number; color?: string; background?: string; size?: number;
 }) {
+  const gl = useThree(state => state.gl);
+  const anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy());
   const key = lines.join("\n");
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas");
@@ -41,8 +43,10 @@ function Label({ lines, width = 2.7, height = .76, color = "#f4f0ea", background
       ctx.fillText(line, 512, canvas.height / 2 + (i - (lines.length - 1) / 2) * lineHeight, 980);
     });
     const map = new CanvasTexture(canvas); map.colorSpace = SRGBColorSpace;
+    map.anisotropy = anisotropy;
+    map.minFilter = LinearMipmapLinearFilter; map.magFilter = LinearFilter;
     return map;
-  }, [key, width, height, color, background, size]);
+  }, [key, width, height, color, background, size, anisotropy]);
   useEffect(() => () => texture.dispose(), [texture]);
   return <mesh><planeGeometry args={[width, height]} /><meshBasicMaterial map={texture} transparent={!background} depthWrite={false} toneMapped={false} /></mesh>;
 }
@@ -57,17 +61,23 @@ function Block({ position = [0, 0, 0], args, color = "#1e293b", radius = .04, me
 
 /** The tiny interfaces are real, locally drawn product surfaces, not screenshots. */
 function SoftwareSurface({ kind, width, height, materialRef }: { kind: "architecture" | "dashboard"; width: number; height: number; materialRef?: Ref<MeshBasicMaterial> }) {
+  const gl = useThree(state => state.gl);
+  const anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy());
   const texture = useMemo(() => {
     const canvas = document.createElement("canvas");
-    canvas.width = 1024; canvas.height = kind === "architecture" ? 640 : 1200;
+    const logicalHeight = kind === "architecture" ? 640 : 1200;
+    canvas.width = 2048; canvas.height = logicalHeight * 2;
     const ctx = canvas.getContext("2d")!;
+    ctx.scale(2, 2);
+    /* Draw in logical coordinates, rasterize at twice the resolution. */
+
     const text = (value: string, x: number, y: number, size = 30, color = "#f4f0ea") => {
       ctx.fillStyle = color; ctx.font = `500 ${size}px Arial, sans-serif`; ctx.fillText(value, x, y);
     };
     const rect = (x: number, y: number, w: number, h: number, fill: string) => {
       ctx.fillStyle = fill; ctx.fillRect(x, y, w, h);
     };
-    rect(0, 0, 1024, canvas.height, "#0f172a");
+    rect(0, 0, 1024, logicalHeight, "#0f172a");
     if (kind === "architecture") {
       text("FIELD SUPPLY / ARCHITECTURE", 48, 65, 33, "#f8d5c4");
       const nodes = [{ x: 55, name: "ERP" }, { x: 365, name: "CRM" }, { x: 675, name: "COMMERCE" }];
@@ -104,8 +114,11 @@ function SoftwareSurface({ kind, width, height, materialRef }: { kind: "architec
         text("Synced", 785, 934 + i * 80, 23, "#f8d5c4");
       });
     }
-    const map = new CanvasTexture(canvas); map.colorSpace = SRGBColorSpace; return map;
-  }, [kind]);
+    const map = new CanvasTexture(canvas); map.colorSpace = SRGBColorSpace;
+    map.anisotropy = anisotropy;
+    map.minFilter = LinearMipmapLinearFilter; map.magFilter = LinearFilter;
+    return map;
+  }, [kind, anisotropy]);
   useEffect(() => () => texture.dispose(), [texture]);
   return <mesh><planeGeometry args={[width, height]} /><meshBasicMaterial ref={materialRef} map={texture} toneMapped={false} transparent={kind === "dashboard"} opacity={kind === "dashboard" ? 0 : 1} /></mesh>;
 }
@@ -293,5 +306,5 @@ class SceneBoundary extends Component<{ children: ReactNode; fallback: ReactNode
 }
 export default function Console3D(props: Props) {
   const fallback = <div className="bx3-fallback"><p>The 3D preview is unavailable in this browser. The workflow below follows the same client brief, software architecture, module integration and application deployment.</p></div>;
-  return <SceneBoundary fallback={fallback}><Canvas shadows frameloop="demand" dpr={[1, 1.5]} camera={{ fov: 35, near: .1, far: 100, position: [0, 10, 20] }} gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }} fallback={fallback}><Scene {...props} /></Canvas></SceneBoundary>;
+  return <SceneBoundary fallback={fallback}><Canvas shadows frameloop="demand" dpr={[1, 2]} camera={{ fov: 35, near: .1, far: 100, position: [0, 10, 20] }} gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }} fallback={fallback}><Scene {...props} /></Canvas></SceneBoundary>;
 }
